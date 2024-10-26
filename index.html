@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluer votre poids</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;700&display=swap">
+    <style>
+        * {
+            user-select: none;
+            font-family: 'Geologica', sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #B0F2B6;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: auto;
+        }
+
+        #calculator {
+            display: flex;
+            width: 80%;
+            padding: 20px;
+            border-radius: 8px;
+            gap: 70px;
+        }
+
+        #calculator .titre {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            flex: 1;
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 34px;
+            color: #333;
+            margin: 0;
+        }
+
+        p {
+            font-size: 22px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 15px; /* Bordure arrondie */
+            background-color: #ffffffbf; /* Couleur de fond */
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
+            flex-basis: 30%;
+        }
+
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555; /* Couleur du texte */
+        }
+
+        .radio {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        input[type="radio"] {
+            width: auto;
+            margin-right: 5px;
+            margin-left: 20px;
+        }
+
+        input[type="radio"] + span {
+            font-size: 16px;
+            color: #555;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            font-size: 18px;
+            padding: 10px; /* Ajustement de la hauteur du champ */
+            margin: 8px 0 20px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc; /* Couleur de la bordure */
+            border-radius: 10px; /* Bordure arrondie */
+            background-color: #ffffffbf; /* Couleur de fond */
+            color: #333; /* Couleur du texte */
+            transition: 0.3s; /* Transition pour un effet de survol */
+        }
+
+        input::placeholder {
+            color: #999; /* Couleur du texte du placeholder */
+            opacity: 0.8; /* Opacité du texte du placeholder */
+        }
+
+        input[type="number"]:focus {
+            outline: none; /* Supprimer la bordure de mise au point par défaut */
+            border-color: #8C3878; /* Couleur de la bordure lorsque le champ est sélectionné */
+        }
+
+        button {
+            background-color: #8C3878; /* Couleur de fond du bouton */
+            color: #fff;
+            padding: 10px; /* Ajustement de la hauteur du bouton */
+            border: none;
+            border-radius: 25px; /* Bordure arrondie */
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 40px;
+            transition: 0.3s; /* Transition pour un effet de survol */
+        }
+
+        button:hover {
+            background-color: #742a63; /* Nouvelle couleur de fond au survol */
+        }
+
+        .resultats {
+            display: none;
+        }
+
+        .resultats.show {
+            display: block;
+            margin: 0;
+        }
+
+        .results {
+            display: flex;
+            gap: 10px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .result {
+            opacity: 0;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: 400;
+            text-align: center;
+            background-color: transparent;
+            border: 2px solid #8C3878;
+            color: #8C3878;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .result.show {
+            opacity: 1;
+        }
+
+        .result:hover {
+            background-color: #8C3878;
+            color: #B0F2B6;
+        }
+
+        @media only screen and (max-width: 768px) {
+            body {
+                align-items: start;
+                justify-content: flex-start;
+            }
+
+            #calculator {
+                width: 100%;
+                flex-direction: column;
+                gap: 30px;
+                padding: 15px;
+            }
+
+            form {
+                flex-basis: auto; /* Adjust the form width for smaller screens */
+            }
+
+            #calculator .titre {
+                text-align: left;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            p {
+                font-size: 18px;
+            }
+
+            .results {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <div class="titre">
+            <h2><span id="dynamicText">Évaluer mon poids</span></h2>
+            <p>Vous devriez entrer votre taille en centimètres ainsi que votre poids en kilogrammes et sélectionner votre sexe pour obtenir votre évaluation, votre IMC et votre poids idéal.</p>    
+            <div class="resultats">
+                <p>Résultats :</p>
+                <div class="results">
+                    <div class="result" id="result1"></div>
+                    <div class="result" id="result2"></div>
+                    <div class="result" id="result3"></div>    
+                </div>
+            </div>
+        </div>
+        <form onsubmit="calculateBMI(); return false;">
+            <label for="height">Taille (en cm):</label>
+            <input type="number" step="1" id="height" placeholder="175" required>
+            
+            <label for="weight">Poids (en Kg):</label>
+            <input type="number" step="0.1" id="weight" placeholder="70" required>
+
+            <label>Sexe :</label>
+            <div class="radio">
+                <input type="radio" id="male" name="gender" value="male" required><span>Homme</span>
+                <input type="radio" id="female" name="gender" value="female" required><span>Femme</span>    
+            </div>
+
+            <button type="submit">Évaluer</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var dynamicText = document.getElementById('dynamicText');
+
+            var texts = ["Évaluer mon poids", "Obtenir mon IMC", "Mon poids idéal !"];
+            var index = 0;
+
+            function updateText() {
+                dynamicText.innerText = texts[index];
+                index = (index + 1) % texts.length;
+
+                setTimeout(updateText, 8000);
+            }
+
+            updateText();
+        });
+
+        function calculateBMI() {
+            var heightInput = document.getElementById('height');
+            var weightInput = document.getElementById('weight');
+            var genderRadioMale = document.getElementById('male');
+            var genderRadioFemale = document.getElementById('female');
+            var result1Div = document.getElementById('result1');
+            var result2Div = document.getElementById('result2');
+            var result3Div = document.getElementById('result3');
+
+            var height = parseFloat(heightInput.value);
+            var weight = parseFloat(weightInput.value);
+            var gender = genderRadioMale.checked ? "male" : "female";
+
+            if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+                alert("Veuillez entrer des valeurs valides pour la taille et le poids.");
+                return;
+            }
+
+            var bmi = weight / Math.pow(height/100, 2);
+            var weightideal;
+
+            if(gender === "male") {
+                weightideal = height - 100 - ((height - 150) / 4);
+            } else {
+                weightideal = height - 100 - ((height - 150) / 2.5);
+            }
+
+            var result1 = "";
+            if (bmi < 18.5) {
+                result1 = "Maigreur(se)";
+            } else if (bmi >= 18.5 && bmi < 24.9) {
+                result1 = "Poids normal";
+            } else if (bmi >= 25 && bmi < 29.9) {
+                result1 = "Surpoids";
+            } else if (bmi >= 30 && bmi < 34.9) {
+                result1 = "Obésité modérée";
+            } else if (bmi >= 35 && bmi < 39.9) {
+                result1 = "Obésité sévère";
+            } else {
+                result1 = "Obésité très sévère";
+            }
+
+            result1Div.innerText = result1;
+            result2Div.innerText = "IMC : " + bmi.toFixed(2);
+            result3Div.innerText = "Poids idéal : " + weightideal.toFixed(2) + " kg";
+
+            var resultatsDiv = document.querySelector('.resultats');
+            resultatsDiv.classList.add('show');
+
+            var resultDivs = document.querySelectorAll('.result');
+            resultDivs.forEach(function(resultDiv, index) {
+                setTimeout(function() {
+                    resultDiv.classList.add('show');
+                }, index * 500);
+            });
+        }
+    </script>
+</body>
+</html>
