@@ -56,16 +56,16 @@
             text-align: left;
             padding: 20px;
             border: 1px solid #ddd;
-            border-radius: 15px; /* Bordure arrondie */
-            background-color: #ffffffbf; /* Couleur de fond */
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
+            border-radius: 15px;
+            background-color: #ffffffbf;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
             flex-basis: 30%;
         }
 
         label {
             margin-top: 10px;
             font-weight: bold;
-            color: #555; /* Couleur du texte */
+            color: #555;
         }
 
         .radio {
@@ -87,40 +87,40 @@
         input[type="number"] {
             width: 100%;
             font-size: 18px;
-            padding: 10px; /* Ajustement de la hauteur du champ */
+            padding: 10px;
             margin: 8px 0 20px 0;
             box-sizing: border-box;
-            border: 1px solid #ccc; /* Couleur de la bordure */
-            border-radius: 10px; /* Bordure arrondie */
-            background-color: #ffffffbf; /* Couleur de fond */
-            color: #333; /* Couleur du texte */
-            transition: 0.3s; /* Transition pour un effet de survol */
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #ffffffbf;
+            color: #333;
+            transition: 0.3s;
         }
 
         input::placeholder {
-            color: #999; /* Couleur du texte du placeholder */
-            opacity: 0.8; /* Opacité du texte du placeholder */
+            color: #999;
+            opacity: 0.8;
         }
 
         input[type="number"]:focus {
-            outline: none; /* Supprimer la bordure de mise au point par défaut */
-            border-color: #8C3878; /* Couleur de la bordure lorsque le champ est sélectionné */
+            outline: none;
+            border-color: #8C3878;
         }
 
         button {
-            background-color: #8C3878; /* Couleur de fond du bouton */
+            background-color: #8C3878;
             color: #fff;
-            padding: 10px; /* Ajustement de la hauteur du bouton */
+            padding: 10px;
             border: none;
-            border-radius: 25px; /* Bordure arrondie */
+            border-radius: 25px;
             cursor: pointer;
             font-size: 18px;
             margin-top: 40px;
-            transition: 0.3s; /* Transition pour un effet de survol */
+            transition: 0.3s;
         }
 
         button:hover {
-            background-color: #742a63; /* Nouvelle couleur de fond au survol */
+            background-color: #742a63;
         }
 
         .resultats {
@@ -183,7 +183,7 @@
             }
 
             form {
-                flex-basis: auto; /* Adjust the form width for smaller screens */
+                flex-basis: auto;
             }
 
             #calculator .titre {
@@ -238,14 +238,12 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var dynamicText = document.getElementById('dynamicText');
-
             var texts = ["Évaluer mon poids", "Obtenir mon IMC", "Mon poids idéal !"];
             var index = 0;
 
             function updateText() {
                 dynamicText.innerText = texts[index];
                 index = (index + 1) % texts.length;
-
                 setTimeout(updateText, 8000);
             }
 
@@ -302,10 +300,8 @@
             resultatsDiv.classList.add('show');
 
             var resultDivs = document.querySelectorAll('.result');
-            resultDivs.forEach(function(resultDiv, index) {
-                setTimeout(function() {
-                    resultDiv.classList.add('show');
-                }, index * 500);
+            resultDivs.forEach(function(div) {
+                div.classList.add('show');
             });
         }
     </script>
